@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SkillType {
+  HARD
+  SOFT
+}
+
+enum Category {
+  FRONTEND
+  BACKEND
+  DEVOPS
+  DATA
+  ML
+  MANAGEMENT
+  DESIGN
+  TESTING
+  OTHER
+}
+
+enum ProjectType{
+	JOB
+	PROJECT
+}
+
+
+model Keyword {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    Category   // e.g. "Frontend", "Backend", "Leadership"
+  skillType   String   // "Hard" | "Soft"
+  importance  Int      // ranking / weight
+
+  bulletLinks BulletKeyword[]
+}
+
+model BulletPoint {
+  id          Int      @id @default(autoincrement())
+  content     String
+
+  projectId   Int
+  project     Project  // or relation if you expand later
+  job         String?
+
+  category    String   // same idea as keyword
+  skillType   String   // "Hard" | "Soft"
+
+  keywordLinks BulletKeyword[]
+}
+
+model Project {
+  id        Int           @id @default(autoincrement())
+  name      String
+  type      ProjectType        // "Job" | "Project" 
+  bullets   BulletPoint[]
+}
+
+model BulletKeyword {
+  bulletId  Int
+  keywordId Int
+
+  bullet    BulletPoint @relation(fields: [bulletId], references: [id])
+  keyword   Keyword     @relation(fields: [keywordId], references: [id])
+
+  @@id([bulletId, keywordId])
+}
