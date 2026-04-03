@@ -17,17 +17,7 @@ export default function HomePage() {
   const handleSearch = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (!query.trim()) return;
-	const result = await getBulletPointsForKeyword(query)
-	if !result.exists {
-		// have the option to create a prompt for the keyword
-	} else {
-		if len(result.bullPoints) == 0 {
-			// have option to create prompt for bulletpoints
-			// for each project containing keyword		
-		} else {
-			// display the bulletpoints by project which contain keyword
-		}
-	}
+	results = await getBulletPointsForKeyword(query)
   };
 
   const handleClear = (): void => {
@@ -113,39 +103,17 @@ export default function HomePage() {
       {/* ── Results Section ── */}
       {hasSearched && (
         <div className="w-full max-w-2xl mt-12">
-          <p className="text-white/25 text-xs tracking-widest uppercase mb-6">
-            Results for &quot;{query}&quot;
-          </p>
-
           {results.length === 0 ? (
-            <p className="text-white/30 text-sm text-center py-10">
-              No results found.
-            </p>
-          ) : (
-            <ul className="flex flex-col gap-3">
-              {results.map((result) => (
-                <li
-                  key={result.id}
-                  className="border border-white/[0.08] hover:border-white/20 bg-white/[0.02] hover:bg-white/[0.04] rounded-sm px-5 py-4 transition-all duration-200 cursor-pointer group"
-                >
-                  <a href={result.url} className="no-underline" target="_blank" rel="noreferrer">
-                    <p className="text-white text-sm font-semibold tracking-wide group-hover:text-white/80 transition-colors duration-200">
-                      {result.title}
-                    </p>
-                    <p className="text-white/35 text-xs mt-1 leading-relaxed">
-                      {result.description}
-                    </p>
-                    <p className="text-white/20 text-xs mt-2 tracking-wide">
-                      {result.url}
-                    </p>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-
+			// prompt for making a ats keyword
+			<Create(query)/>
+          )} : ( 
+		  
+		  {results.results.length === 0 ? (	
+			// prompt for making a bullet point
+		  )}
+		  : (
+		  // display the list
+          )
     </div>
   );
 }
