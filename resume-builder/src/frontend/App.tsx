@@ -1,9 +1,11 @@
-import { useState } from 'react'
-import HomePage from './HomePage.tsx'
+import HomePage from './HomePage'
+import { PageProvider } from "./context/pageProvider";
 
 function App() {
   return (
-		<HomePage/>	
+		<PageProvider>
+			<HomePage/>	
+		</PageProvider>
       )
 }
 

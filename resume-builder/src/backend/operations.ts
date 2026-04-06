@@ -1,13 +1,20 @@
-import { PrismaClient } from '../src/generated/prisma';
+import "dotenv/config";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "../generated/prisma/client";
 
-const prisma = new PrismaClient();
+import type { BulletPoint, Project } from "../shared/types"
+const connectionString = `${process.env.DATABASE_URL}`;
+
+const adapter = new PrismaBetterSqlite3({ url: connectionString });
+
+const prisma = new PrismaClient({ adapter });
 
 type BulletPointsResult = {
   exists: boolean;
   bulletPoints: (BulletPoint & { keyword: string })[];
 };
 
-async function getBulletPointsForKeyword(atsKeyword: string): Promise<BulletPointsResult> {
+export async function getBulletPointsForKeyword(atsKeyword: string): Promise<BulletPointsResult> {
   // Find the keyword
   const keywordRecord = await prisma.keyword.findUnique({
     where: { name: atsKeyword },
@@ -36,4 +43,9 @@ async function getBulletPointsForKeyword(atsKeyword: string): Promise<BulletPoin
     exists,
     bulletPoints,
   };
+}
+
+export async function getProjects(): Promise<Project[]>{
+	const projects = await prisma.project.findMany();
+	return projects
 }

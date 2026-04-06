@@ -8,7 +8,7 @@ function buildBulletPointPrompt(query: string): string {
   return `Extract ATS keywords from the following job description. Return a list of skills, tools, and qualifications ranked by importance.\n\nJob Description:\n${query}`;
 }
 
-export default function BulletPointButton({ query }: ATSButtonProps) {
+export default function BulletPointButton({ query }: BulletPointButtonProps) {
   const [copied, setCopied] = useState<boolean>(false);
 
   const handleCopy = (): void => {

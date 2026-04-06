@@ -1,8 +1,6 @@
 import { useState } from "react";
-import type { BulletPoint, Keyword } from "../shared/types" 
-interface BulletPointListProps {
-  bullets: BulletPoint[];
-}
+import type { BulletPoint } from "../shared/types" 
+import { ProjectType } from "../shared/types"
 
 interface GroupedBullets {
   projectId: number;
@@ -10,6 +8,11 @@ interface GroupedBullets {
   type: ProjectType;
   items: BulletPoint[];
 }
+
+interface BulletPointListProps {
+	bullets: BulletPoint[];	
+}
+
 
 function groupBullets(bullets: BulletPoint[]): GroupedBullets[] {
   const map = new Map<number, GroupedBullets>();
@@ -19,7 +22,7 @@ function groupBullets(bullets: BulletPoint[]): GroupedBullets[] {
       map.set(bullet.projectId, {
         projectId: bullet.projectId,
         label: bullet.job ?? `Project ${bullet.projectId}`,
-        type: bullet.project?.type ?? ProjectType.JOB,
+        type: bullet.projectType ?? ProjectType.JOB,
         items: [],
       });
     }

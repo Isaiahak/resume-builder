@@ -5,11 +5,16 @@
     "target": "ES2023",
     "strict": true,
     "esModuleInterop": true,
-    "ignoreDeprecations": "6.0"
+    "ignoreDeprecations": "5.0",
+	"composite": true,
+	"declaration": false,	
+	"emitDeclarationOnly": false,
+	"outDir": "./dist",
+	"rootDir": "./src",
   },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
 }

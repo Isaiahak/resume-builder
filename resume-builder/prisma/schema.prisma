@@ -31,7 +31,7 @@ enum ProjectType {
 
 model Keyword {
   id         Int      @id @default(autoincrement())
-  name       String
+  name       String @unique
   category   Category // e.g. "Frontend", "Backend", "Leadership"
   skillType  String // "Hard" | "Soft"
   importance Int // ranking / weight
@@ -44,6 +44,7 @@ model BulletPoint {
   content String
 
   projectId Int
+  projectType ProjectType
   project   Project @relation(fields: [projectId], references: [id]) // or relation if you expand later
   job       String?
 
@@ -56,6 +57,8 @@ model BulletPoint {
 model Project {
   id      Int           @id @default(autoincrement())
   name    String
+  description String
+  duration DateTime 
   type    ProjectType // "Job" | "Project" 
   bullets BulletPoint[]
 }
