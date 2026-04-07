@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { PageContext } from "./context/pageContext";
 import Nav from "./nav";
-import SearchPage from "./SearchPage";
-import ProjectViewPage from "./ProjectViewPage";
-import AddPage from "./AddPage";
+import SearchPage from "./search/SearchPage";
+import ProjectViewPage from "./project/ProjectViewPage";
+import AddPage from "./add/AddPage";
 
 export default function HomePage() {
 	const context = useContext(PageContext);
