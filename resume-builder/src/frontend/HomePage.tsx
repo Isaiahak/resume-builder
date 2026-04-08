@@ -16,7 +16,7 @@ export default function HomePage() {
 	<div className="min-h-screen bg-black text-white flex flex-col items-center px-6 font-mono">
 		<Nav/>
 		{/* ── Hero + Search ── */}
-		<div className="w-full mt-10 pb-10 max-w-2xl flex flex-col items-center">
+		<div className="w-full mt-10 pb-20 max-w-2xl flex flex-col items-center">
 		{/* Headline */}
 			<h1 className="text-5xl md:text-6xl font-bold tracking-tight text-white text-center mb-3">
 			Resume Builder

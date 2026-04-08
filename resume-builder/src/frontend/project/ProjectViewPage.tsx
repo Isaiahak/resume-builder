@@ -1,7 +1,7 @@
 import ProjectInfo from "./ProjectInfo";
 import ProjectButton from "./ProjectButton";
 import ProjectBulletPoints from "./ProjectBulletPoints";
-import { ProjectProvider } from "./context/projectProvider";
+import { ProjectProvider } from "../context/projectProvider";
 import { useEffect, useState } from "react";
 import type { Project } from "../../shared/types";
 
