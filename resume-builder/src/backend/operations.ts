@@ -1,12 +1,14 @@
 import "dotenv/config";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import { PrismaClient } from "../generated/prisma/client";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const { PrismaClient } = require("../generated/prisma/client");
+//import { PrismaClient } from "@prisma/client";
+import type { BulletPoint, Keyword, Project } from "../shared/types";
 
-import type { BulletPoint, Project } from "../shared/types"
 const connectionString = `${process.env.DATABASE_URL}`;
 
 const adapter = new PrismaBetterSqlite3({ url: connectionString });
-
 const prisma = new PrismaClient({ adapter });
 
 type BulletPointsResult = {
@@ -47,5 +49,52 @@ export async function getBulletPointsForKeyword(atsKeyword: string): Promise<Bul
 
 export async function getProjects(): Promise<Project[]>{
 	const projects = await prisma.project.findMany();
-	return projects
+	return projects;
 }
+
+export async function addKeyword(keyword: Keyword): Promise<boolean>{
+	try{
+		const ats = prisma.keyword.create(keyword);
+		console.log("successfully added to db");
+		return true;
+	} catch(err) {
+		console.log("failed to save to db", err);
+		return false;
+	}
+}
+
+export async function addBulletpoint(bulletPoint: BulletPointPrompt): Promise<boolean>{
+	try{
+		const keywords = bulletPoint.keywords
+
+		const point = prisma.bulletpoint.create({
+			content: bulletPoint.content,
+			projectType: bulletPoint.projectType,
+			project: {
+				connect: bulletPoint.project.id,
+			},
+			category: bulletPoint.category,
+			skillType: bulletPoint.skillType,
+			keywordLinks: {
+				connect: keywords.map((keyword) => ({
+					name:keyword
+				}))
+			}
+		});
+		console.log("successfully added to db");
+		return true;
+	} catch(err){
+		console.log("failed to save to db", err);
+		return false;
+	}
+}
+
+export async function checkForAts(ats: Keyword): Promise<boolean>{
+	const keywordRecord = await prisma.keyword.findUnique({
+	where: { name: ats.name },
+	});
+
+	const exists = !!keywordRecord;
+	return exists;
+}
+

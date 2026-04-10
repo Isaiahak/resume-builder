@@ -1,11 +1,12 @@
 import AddAts from "./AddAts";
 import AddBulletPoint from "./AddBulletPoint";
+import AddProject from "./AddProject";
 import { useState } from "react";
 
 export default function AddPage(){
 
-	const options = ["ats","bulletpoint"]
-	type addOption = "ats" | "bulletpoint"
+	const options = ["ats","bulletpoint","project"]
+	type addOption = "ats" | "bulletpoint" | "project"
 	const [selected, setSelected ] = useState<option>("ats")
 
 	function AddSelector(){
@@ -33,8 +34,10 @@ export default function AddPage(){
 		<AddSelector/>
 		{selected === "ats" ? (
 			<AddAts/>
-		) : (
+		) : selected === "bulletpoint" ? (
 			<AddBulletPoint/>
+		) :(
+			<AddProject/>
 		)}
 	</div>
 	)

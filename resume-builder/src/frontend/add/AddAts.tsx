@@ -1,5 +1,5 @@
 import { useState }from "react";
-import type { Keyword } from "../../shared/types";
+import type { Keyword, AddAtsResult } from "../../shared/types";
 
 export default function AddAts(){
 	const [ats, setAts] = useState<string>("");	
@@ -9,18 +9,30 @@ export default function AddAts(){
 		try {
 			setIsSaving(true);
 			const data: Keyword = JSON.parse(ats);
-			console.log(data);
 			const res = await fetch("http://localhost:3000/add-ats",{
 				method: "POST",
-				header: {"Content-Type":"application/json"},
+				headers: {"Content-Type":"application/json"},
 				body: JSON.stringify(data)
 			});
 			if (!res.ok) {
-				console.log("Failed to add ats");	
+				console.log("Failed to connect to server");	
 				setIsSaving(false);
 			} else {
-				console.log("successfully added keyword");
-				setIsSaving(true);
+				const result: AddAtsResult = await res.json()
+				if (result.exists) {
+					console.log("db already contains the keyword");
+					// some type of error module
+					setAts("");
+				}
+				if (result.added === true) {
+					console.log("successfully added keyword");
+					// some type of module for success
+					setAts("");
+				} else {
+					// some type of module for failure
+					console.log("failed to add keyword");
+				}
+				setIsSaving(false);
 			}
 		} catch(err){
 			console.log("Invalid JSON: ", err);

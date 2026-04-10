@@ -1,26 +1,35 @@
 import { useState }from "react";
-import type { Keyword } from "../../shared/types";
+import type { Keyword, AddBulletpointResult, BulletPointPrompt } from "../../shared/types";
 
 export default function AddBulletPoint(){
-	const [bulletPoint, setbulletPoint] = useState<string>("");	
+	const [bulletPoint, setBulletPoint] = useState<string>("");	
 	const [isSaving, setIsSaving] = useState<bool>(false);	
 
 	const handleAdd = async (e: React.FormEvent<HTMLFormEvent>): Promise<void> => {
 		try {
 			setIsSaving(true);
-			const data: Keyword = JSON.parse(bulletPoint);
+			const data: BulletPointPrompt = JSON.parse(bulletPoint);
 			console.log(data);
-			const res = await fetch("http://localhost:3000/add-bulletPoint",{
+			const res = await fetch("http://localhost:3000/add-bulletpoint",{
 				method: "POST",
 				header: {"Content-Type":"application/json"},
 				body: JSON.stringify(data)
 			});
 			if (!res.ok) {
-				console.log("Failed to add bulletpoint");	
+				console.log("Failed to connect to server");	
 				setIsSaving(false);
 			} else {
-				console.log("successfully added bulletpoint");
-				setIsSaving(true);
+				const result: AddBulletpointResult = res.json()
+				if (result.exists) {
+					console.log("db already contains bulletpoint");
+					setBulletPoint("");
+				} else if (result.added === true) {
+					console.log("successfully added bulletpoint");
+					setBulletPoint("");
+				} else {
+					console.log("failed to add bulletpoint");
+				}
+				setIsSaving(false);
 			}
 		} catch(err){
 			console.log("Invalid JSON: ", err);

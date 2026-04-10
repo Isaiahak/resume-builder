@@ -11,5 +11,9 @@ export {
 } from "../generated/prisma/enums";
 
 export type {
-	BulletPointsResult
+	BulletPointsResult,
+	AddAtsResult,
+	AddBulletpointResult,
 } from "./api-types"
+
+

@@ -13,7 +13,7 @@ export default function ProjectViewPage(){
 
 	useEffect(() => {
 		async function getProjects() {
-			const res = await fetch("http://localhost:3000/projects")
+			const res = await fetch("http://localhost:3000/get-projects")
 			if (!res.ok) {
 				console.log("couldn't get projects")
 			}

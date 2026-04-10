@@ -5,7 +5,55 @@ interface ATSButtonProps {
 }
 
 function buildATSPrompt(query: string): string {
-  return `Extract ATS keywords from the following job description. Return a list of skills, tools, and qualifications ranked by importance.\n\nJob Description:\n${query}`;
+  return `
+After doing research on the 2026 software developer market, I need you to create json representation of this model for the keyword: ${query}. Normalize the name to a standard industry format (Title Case, expand common abbreviations like JS → JavaScript, keep widely accepted acronyms like HTML unchanged)
+model Keyword {
+  id         Int      @id @default(autoincrement())
+  name       String @unique
+  category   Category 
+  skillType  String   
+  importance Rating 
+  bulletLinks BulletKeyword[]
+} 
+
+where, the Category is defined as, Choose the primary/most representative category in job postings.
+enum Category {
+  FRONTEND
+  BACKEND
+  DEVOPS
+  DATA
+  ML
+  MANAGEMENT
+  DESIGN
+  TESTING
+  OTHER
+} 
+
+and skill type is defined as, Use HARD for technical skills and SOFT for interpersonal/organizational skills.
+
+enum SkillType {
+  HARD
+  SOFT
+}
+
+and Rating defined as. where Importance should reflect demand in the 2026 job market on a scale of ZERO–TEN, where TEN = essential/core skill across most roles.
+
+enum Rating {
+	ZERO
+	ONE
+	TWO
+	THREE
+	FOUR
+	FIVE
+	SIX
+	SEVEN
+	EIGHT
+	NINE
+	TEN
+}
+
+return only valid JSON. No explanations.
+  `;
 }
 
 export default function ATSButton({ query }: ATSButtonProps) {
@@ -30,13 +78,9 @@ export default function ATSButton({ query }: ATSButtonProps) {
         disabled:opacity-20 disabled:cursor-default`}
     >
       <div className="flex items-center gap-3">
-        <span className="text-white/30 text-base select-none">◈</span>
         <div className="text-left">
           <p className="text-white text-xs font-semibold tracking-widest uppercase">
             ATS Prompt
-          </p>
-          <p className="text-white/25 text-xs tracking-wide mt-0.5">
-            Copy prompt to extract ATS keywords
           </p>
         </div>
       </div>
