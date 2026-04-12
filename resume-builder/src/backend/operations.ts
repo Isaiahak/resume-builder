@@ -54,7 +54,14 @@ export async function getProjects(): Promise<Project[]>{
 
 export async function addKeyword(keyword: Keyword): Promise<boolean>{
 	try{
-		const ats = prisma.keyword.create(keyword);
+		const ats = await prisma.keyword.create({
+			data: {
+				name: keyword.name,
+				category: keyword.category,
+				skillType: keyword.skillType,
+				importance: keyword.importance
+			}
+		});
 		console.log("successfully added to db");
 		return true;
 	} catch(err) {
@@ -67,18 +74,20 @@ export async function addBulletpoint(bulletPoint: BulletPointPrompt): Promise<bo
 	try{
 		const keywords = bulletPoint.keywords
 
-		const point = prisma.bulletpoint.create({
-			content: bulletPoint.content,
-			projectType: bulletPoint.projectType,
-			project: {
-				connect: bulletPoint.project.id,
-			},
-			category: bulletPoint.category,
-			skillType: bulletPoint.skillType,
-			keywordLinks: {
-				connect: keywords.map((keyword) => ({
-					name:keyword
-				}))
+		const point = await prisma.bulletpoint.create({
+			data: {
+				content: bulletPoint.content,
+				projectType: bulletPoint.projectType,
+				project: {
+					connect: bulletPoint.project.id,
+				},
+				category: bulletPoint.category,
+				skillType: bulletPoint.skillType,
+				keywordLinks: {
+					connect: keywords.map((keyword) => ({
+						name:keyword
+					}))
+				}
 			}
 		});
 		console.log("successfully added to db");
@@ -98,3 +107,16 @@ export async function checkForAts(ats: Keyword): Promise<boolean>{
 	return exists;
 }
 
+export async function getCategoryKeywords(): Promise<Map<Category, Keyword[]>>{
+	
+	const categoryKeywords: Map<Category, Keyword[]> = new Map();
+	const categories  = Object.Values(Category);
+	for (const category of categories ){
+		const keywords = await prisma.keyword.FindMany({
+			where: { category: category },
+		})
+		categoryKeywords[category] = keywords;
+	}
+
+	return categoryKeywords
+}

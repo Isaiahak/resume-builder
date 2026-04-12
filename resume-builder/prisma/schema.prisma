@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
@@ -10,6 +10,20 @@ datasource db {
 enum SkillType {
   HARD
   SOFT
+}
+
+enum Rating {
+  ZERO
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
+  SIX
+  SEVEN
+  EIGHT
+  NINE
+  TEN
 }
 
 enum Category {
@@ -30,37 +44,36 @@ enum ProjectType {
 }
 
 model Keyword {
-  id         Int      @id @default(autoincrement())
-  name       String @unique
-  category   Category // e.g. "Frontend", "Backend", "Leadership"
-  skillType  String // "Hard" | "Soft"
-  importance Int // ranking / weight
-
-  bulletLinks BulletKeyword[]
+  id           Int             @id @default(autoincrement())
+  name         String          @unique
+  category     Category
+  skillType    String
+  importance   Rating
+  bulletLinks  BulletKeyword[]
+  projectLinks Project[]
 }
 
 model BulletPoint {
   id      Int    @id @default(autoincrement())
   content String
 
-  projectId Int
-  projectType ProjectType
-  project   Project @relation(fields: [projectId], references: [id]) // or relation if you expand later
-  job       String?
-
-  category  String // same idea as keyword
-  skillType String // "Hard" | "Soft"
-
+  projectId    Int
+  projectType  ProjectType
+  project      Project         @relation(fields: [projectId], references: [id]) // or relation if you expand later
+  category     Category
+  skillType    SkillType
   keywordLinks BulletKeyword[]
 }
 
 model Project {
-  id      Int           @id @default(autoincrement())
-  name    String
+  id          Int                 @id @default(autoincrement())
+  name        String
   description String
-  duration DateTime 
-  type    ProjectType // "Job" | "Project" 
-  bullets BulletPoint[]
+  duration    DateTime
+  type        ProjectType
+  categories  ProjectCategories[]
+  keyword     Keyword[]
+  bullets     BulletPoint[]
 }
 
 model BulletKeyword {
@@ -71,4 +84,11 @@ model BulletKeyword {
   keyword Keyword     @relation(fields: [keywordId], references: [id])
 
   @@id([bulletId, keywordId])
+}
+
+model ProjectCategories {
+  id        Int      @id @default(autoincrement())
+  projectId Int
+  project   Project  @relation(fields: [projectId], references: [id])
+  category  Category
 }

@@ -31,10 +31,12 @@ app.post("/add-ats", async (req,res) =>{
 	const ats: Keyword = req.body;
 	const exists: boolean = await checkForAts(ats);
 	if (exists) {
+		console.log("failed to add ", ats, "it already exists");
 		const result: AddAtsResult = {exists: true, added: false};
 		res.json(result);
 	} else {
-		const added: boolean = await addKeyword(ats);
+		const added: boolean = await addKeyword(ats); 
+		console.log("added : ", ats.name, " to database");
 		const result: AddAtsResult = {exists: exists, added: added};
 		res.json(result);
 	}
@@ -50,3 +52,10 @@ app.post("/add-bulletpoint", async (req,res) =>{
 app.listen(3000, () => {
 	console.log("Server running on http://localhost:3000");
 });
+
+app.get("/get-category-keywords", async (req,res) => {
+	const categoryKeywords: Map<Category, Keyword[]> = await getCategoryKeywords();
+	res.json(categoryKeywords);
+}
+
+
