@@ -8,7 +8,7 @@ export default function AddAts(){
 	const handleAdd = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		try {
 			setIsSaving(true);
-			const data: Keyword = JSON.parse(ats);
+			const data: Keyword[] = JSON.parse(ats);
 			const res = await fetch("http://localhost:3000/add-ats",{
 				method: "POST",
 				headers: {"Content-Type":"application/json"},
@@ -18,7 +18,7 @@ export default function AddAts(){
 				console.log("Failed to connect to server");	
 				setIsSaving(false);
 			} else {
-				const result: AddAtsResult = await res.json()
+				const result: AddAtsResult = await res.json();
 				if (result.exists) {
 					console.log("db already contains the keyword");
 					// some type of error module

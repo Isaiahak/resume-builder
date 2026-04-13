@@ -23,3 +23,8 @@ export type BulletPointPrompt = {
 	skillType: SkillType;
 	keywords: string[];
 }
+
+export type AddProjectResult = {
+	exists: boolean;
+	added: boolean;
+}

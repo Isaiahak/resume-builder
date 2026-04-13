@@ -29,19 +29,21 @@ app.get("/get-projects", async (req,res) => {
 });
 
 app.post("/add-ats", async (req,res) =>{
-	const ats: Keyword = req.body;
+	const ats: Keyword[] = req.body;
 	const result: AtsResult = {
 		exists: false,
 		added: false
 	};
-	const exists: boolean = await checkForAts(keyword);
-	if (exists) {
-		console.log("failed to add ", keyword, "it already exists");
-		result.exists = true;
-	} else {
-		const added: boolean = await addKeyword(keyword); 
-		console.log("added : ", keyword.name, " to database");
-		result.added = true;
+	for (const keyword: Keyword of ats){
+		const exists: boolean = await checkForAts(keyword);
+		if (exists) {
+			console.log("failed to add ", keyword, "it already exists");
+			result.exists = true;
+		} else {
+			const added: boolean = await addKeyword(keyword); 
+			console.log("added : ", keyword.name, " to database");
+			result.added = true;
+		}
 	}
 	res.json(result);	
 });
@@ -51,6 +53,15 @@ app.post("/add-bulletpoint", async (req,res) =>{
 	const result: boolean = await addBulletPoint(point);
 	res.json(result);
 	console.log("user attempted add bulletpoint, result: ", result);
+});
+
+app.post("/add-project", async (req,res) => {
+	const project: Project = req.body;
+	const result: boolean = await addProject(project);
+	if (result){
+	} else {
+	}
+	res.json(result);
 });
 
 app.listen(3000, () => {

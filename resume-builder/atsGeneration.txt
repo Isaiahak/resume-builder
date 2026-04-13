@@ -1,4 +1,4 @@
-given the current software market for develops im going to need you to generate a list of 20 ats keywords most valuable to each category. 
+After doing research on the current software market for software engineers im going to need you to generate a list of 20 ats keywords most valuable and in demand to each category. 
 
 where, the Category is defined as, Choose the primary/most representative category in job postings.
 enum Category {
