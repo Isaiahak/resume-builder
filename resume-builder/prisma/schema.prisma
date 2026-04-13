@@ -12,20 +12,6 @@ enum SkillType {
   SOFT
 }
 
-enum Rating {
-  ZERO
-  ONE
-  TWO
-  THREE
-  FOUR
-  FIVE
-  SIX
-  SEVEN
-  EIGHT
-  NINE
-  TEN
-}
-
 enum Category {
   FRONTEND
   BACKEND
@@ -48,7 +34,7 @@ model Keyword {
   name         String          @unique
   category     Category
   skillType    String
-  importance   Rating
+  importance   Int
   bulletLinks  BulletKeyword[]
   projectLinks Project[]
 }

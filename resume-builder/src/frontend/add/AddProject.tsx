@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import type { Project, Keyword } from "../../shared/types";
-import { ProjectType } from "../../shared/types";
+import { Category, ProjectType } from "../../shared/types";
 
 export default function AddProject(){
-	const [categoryKeywords, setCategoryKeywords ] = useState<Map<Category,Keyword[]>>();
-	const [selectedCategory, setSelectedCategory ] = useState<Category>(Category.FRONTEND);
+	const [categoryKeywords, setCategoryKeywords ] = useState<Map<CategoryType,Keyword[]>>();
+	const [selectedKeywords, setSelectedKeywords ] = useState<Set<string>>();
+	const [selectedCategory, setSelectedCategory ] = useState<CategoryType>(Category.FRONTEND);
 	const [project, setProject ] = useState<Project>({
 		name: "",
 		description: "",
@@ -20,13 +21,21 @@ export default function AddProject(){
 			const res  = await fetch("http://localhost:3000/get-category-keywords");	
 			if (!res.ok){
 			} else {
-				const data: Map<Category, Keyword[]> = res.json();
+				const data: Map<CategoryType, Keyword[]> = res.json();
 				setCategoryKeywords(data);
 			}
 		}
 		getKeywordsForCategories();
 	}, []);
 		
+	function handleKeywordClick(keyword: string){
+		if (selectedKeywords.contains(keyword)) {
+			setSelectedKeywords(selectedKeywords.delete(keyword));
+		} else {
+			setSelectedKeywords(selectedKeywords.add(keyword));
+		}
+	}
+
 	const CategorySection = () => {
 		const categories = Objects.values(Category);
 		return(
@@ -35,8 +44,9 @@ export default function AddProject(){
 				<button
 				onClick={setSelectedCategory(category)}
 				>
+				{category}
 				</button>
-			)}
+			))}
 			</div>
 		)
 	}
@@ -47,17 +57,17 @@ export default function AddProject(){
 			<div className="flex flex-wrap max-width-120">
 			{keywords.map.foreach((keyword) => (
 				<button
-				onClick={}
+				onClick={() => handleKeywordClick(keyword.name)}
 				>
+				{keyword.name}
 				</button>
-			)	
-			}
+			))}
 			</div>
 		)
 	}
 
 	// per category on this page we show a list of keywords that can be attached to the project
-	const handleClick = (): void =>{
+	const handleClick = (): void => {
 		
 	};
 

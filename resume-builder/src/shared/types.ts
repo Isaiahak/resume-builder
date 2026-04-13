@@ -1,14 +1,32 @@
-export type {
-	BulletPoint,
-	Keyword,
-	Project,
-} from "../generated/prisma/client";
+export const SkillType = {
+	HARD: 'HARD',
+	SOFT: 'SOFT'
+};
 
-export {
-	SkillType,
-	Category,
-	ProjectType,
-} from "../generated/prisma/enums";
+export const Category = {
+  FRONTEND: 'FRONTEND',
+  BACKEND: 'BACKEND',
+  DEVOPS: 'DEVOPS',
+  DATA: 'DATA',
+  ML: 'ML',
+  MANAGEMENT: 'MANAGEMENT',
+  DESIGN: 'DESIGN',
+  TESTING: 'TESTING',
+  OTHER: 'OTHER'
+
+};
+
+export const ProjectType = {
+  JOB: 'JOB',
+  PROJECT: 'PROJECT'
+};
+
+export type {
+  BulletPoint,
+  Keyword,
+  Project,
+} from "../generated/prisma";
+
 
 export type {
 	BulletPointsResult,

@@ -1,10 +1,9 @@
 import { useState } from "react";
 import type { BulletPoint } from "../../shared/types" 
-import { ProjectType } from "../../shared/types"
+import { ProjectType } from "../../shared/types";
 
 interface GroupedBullets {
   projectId: number;
-  label: string;
   type: ProjectType;
   items: BulletPoint[];
 }
@@ -21,7 +20,6 @@ function groupBullets(bullets: BulletPoint[]): GroupedBullets[] {
     if (!map.has(bullet.projectId)) {
       map.set(bullet.projectId, {
         projectId: bullet.projectId,
-        label: bullet.job ?? `Project ${bullet.projectId}`,
         type: bullet.projectType ?? ProjectType.JOB,
         items: [],
       });

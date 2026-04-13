@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
-import type {  BulletPoint, Keyword, AddAtsResult, BulletPointPrompt } from "../shared/types";
-import { getBulletPointsForKeyword, checkForAts, getProjects, addKeyword, addBulletpoint } from "./operations";
+import type {  BulletPoint, Category, Keyword, AddAtsResult, BulletPointPrompt } from "../shared/types";
+import { getBulletPointsForKeyword, checkForAts, getProjects, addKeyword, addBulletpoint, getCategoryKeywords } from "./operations";
+
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.get("/check-ats", async (req,res) => {
 	console.log("use checked ats:", query);
 });
 
-app.get("/projects", async (req,res) => {
+app.get("/get-projects", async (req,res) => {
 	const projects = await getProjects();
 	res.json(projects);
 	console.log("user requested for projects");
@@ -29,17 +30,20 @@ app.get("/projects", async (req,res) => {
 
 app.post("/add-ats", async (req,res) =>{
 	const ats: Keyword = req.body;
-	const exists: boolean = await checkForAts(ats);
+	const result: AtsResult = {
+		exists: false,
+		added: false
+	};
+	const exists: boolean = await checkForAts(keyword);
 	if (exists) {
-		console.log("failed to add ", ats, "it already exists");
-		const result: AddAtsResult = {exists: true, added: false};
-		res.json(result);
+		console.log("failed to add ", keyword, "it already exists");
+		result.exists = true;
 	} else {
-		const added: boolean = await addKeyword(ats); 
-		console.log("added : ", ats.name, " to database");
-		const result: AddAtsResult = {exists: exists, added: added};
-		res.json(result);
+		const added: boolean = await addKeyword(keyword); 
+		console.log("added : ", keyword.name, " to database");
+		result.added = true;
 	}
+	res.json(result);	
 });
 
 app.post("/add-bulletpoint", async (req,res) =>{
@@ -56,6 +60,6 @@ app.listen(3000, () => {
 app.get("/get-category-keywords", async (req,res) => {
 	const categoryKeywords: Map<Category, Keyword[]> = await getCategoryKeywords();
 	res.json(categoryKeywords);
-}
+});
 
 

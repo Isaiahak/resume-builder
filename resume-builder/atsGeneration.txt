@@ -1,0 +1,35 @@
+given the current software market for develops im going to need you to generate a list of 20 ats keywords most valuable to each category. 
+
+where, the Category is defined as, Choose the primary/most representative category in job postings.
+enum Category {
+  FRONTEND
+  BACKEND
+  DEVOPS
+  DATA
+  ML
+  MANAGEMENT
+  DESIGN
+  TESTING
+  OTHER
+}
+
+Normalize the name to a standard industry format (Title Case, expand common abbreviations like JS → JavaScript, keep widely accepted acronyms like HTML unchanged)
+
+model Keyword {
+  id         Int      @id @default(autoincrement())
+  name       String @unique
+  category   Category 
+  skillType  String   
+  importance Int 
+}
+
+and skill type is defined as, Use HARD for technical skills and SOFT for interpersonal/organizational skills.
+
+enum SkillType {
+  HARD
+  SOFT
+}
+
+and Rating defined as. where Importance should reflect demand in the 2026 job market on a scale of 0–10, where 10 = essential/core skill across most roles.
+
+return only valid JSON with the keywords being in a list, no explanation. when you finish generatign the keywords asyou can ask for the words fro the next category to be generated.

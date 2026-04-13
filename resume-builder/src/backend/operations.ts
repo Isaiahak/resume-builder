@@ -4,7 +4,7 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const { PrismaClient } = require("../generated/prisma/client");
 //import { PrismaClient } from "@prisma/client";
-import type { BulletPoint, Keyword, Project } from "../shared/types";
+import type { Category, BulletPoint, Keyword, Project } from "../shared/types";
 
 const connectionString = `${process.env.DATABASE_URL}`;
 
@@ -31,10 +31,7 @@ export async function getBulletPointsForKeyword(atsKeyword: string): Promise<Bul
     const bullets = await prisma.bulletPoint.findMany({
       where: {
         keywordLinks: { some: { keywordId: keywordRecord.id } },
-      },
-      include: {
-        keywordLinks: true, // optional if you want the links
-      },
+      }
     });
 
     // Attach the ATS keyword to each bullet
@@ -110,9 +107,9 @@ export async function checkForAts(ats: Keyword): Promise<boolean>{
 export async function getCategoryKeywords(): Promise<Map<Category, Keyword[]>>{
 	
 	const categoryKeywords: Map<Category, Keyword[]> = new Map();
-	const categories  = Object.Values(Category);
+	const categories  = Object.values(Category);
 	for (const category of categories ){
-		const keywords = await prisma.keyword.FindMany({
+		const keywords: Keyword[] = await prisma.keyword.findMany({
 			where: { category: category },
 		})
 		categoryKeywords[category] = keywords;
@@ -120,3 +117,4 @@ export async function getCategoryKeywords(): Promise<Map<Category, Keyword[]>>{
 
 	return categoryKeywords
 }
+
