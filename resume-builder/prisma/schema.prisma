@@ -32,7 +32,8 @@ model Project {
   id          Int                 @id @default(autoincrement())
   name        String
   description String
-  duration    DateTime
+  startDate DateTime
+  endDate DateTime
   type        ProjectType
   bullets     BulletPoint[]
   categories  ProjectCategories[]

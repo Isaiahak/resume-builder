@@ -35,7 +35,7 @@ export async function getBulletPointsForKeyword(atsKeyword: string): Promise<Bul
       }
     });
 
-    // Attach the ATS keyword to each bullet
+// Attach the ATS keyword to each bullet
     bulletPoints = bullets.map(b => ({ ...b, keyword: atsKeyword }));
   }
 
@@ -119,3 +119,28 @@ export async function getCategoryKeywords(): Promise<Map<Category, Keyword[]>>{
 	return categoryKeywords
 }
 
+export async function addProject(project: Project): Promise<boolean>{
+	try {
+	const project: Project = await prisma.project.create({
+		data: {
+			name: project.name,
+			description: project.description,
+			startDate: project.startDate,
+			endDate: project.endDate,
+			type: project.type,
+			categories: project.categories,
+			keyword: {
+				connect: {project.keyword.map((keyword) =>{
+						name: keyword.name
+					}
+				}
+				}		
+			}
+	})	
+		console.log("successfully added: ", project.name);
+		return(true);
+	} catch(err){
+		console.log("failed to save project");
+		return(false);
+	}
+}
