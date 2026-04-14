@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
 import type { Project, Keyword, AddProjectResult } from "../../shared/types";
 import { Category, ProjectType } from "../../shared/enums";
+import DateSelector from "./dateComponent";
 
 export default function AddProject() {
 	const [categoryKeywords, setCategoryKeywords] = useState<Map<Category, Keyword[]>>();
 	const [selectedKeywords, setSelectedKeywords] = useState<Set<Keyword>>(new Set());
 	const [selectedCategories, setSelectedCategories] = useState<Set<Category>>(new Set());
+	const [startDate, setStartDate] = useState<DateTime>(new Date());
+	const [endDate, setEndDate] = useState<DateTime>(new Date());
 	const [project, setProject] = useState<Project>({
 		name: "",
 		description: "",
-		duration: undefined,
+		startDate: undefined,
+		endDate: undefined,
 		type: ProjectType.PROJECT,
 		categories: [],
 		keywords: [],
@@ -121,7 +125,12 @@ export default function AddProject() {
 		// sets categories
 		setProject({ ...project, categories: selectedCategories.values()});
 		setProject({ ...project, keywords: selectedKeywords.values()});
+		setProject({...project, startDate: startDate});
 		
+		setProject({...project, endDate: endDate});
+		
+
+
 		const res = await fetch("localhost:5173/add-project",{
 			method: "POST",
 			headers: {"Content-Type":"application/json"},
@@ -142,9 +151,8 @@ export default function AddProject() {
 	}
 
 	return (
-		<div className="w-full">
+		<div className="w-full mt-20">
 			<form className="flex flex-col gap-8">
-
 				<div className="flex flex-col gap-2">
 					<span className="text-xs tracking-widest uppercase text-white/30 font-mono">
 						Project Name
@@ -197,6 +205,8 @@ export default function AddProject() {
 				</div>
 
 				<div className="border-t border-white/[0.06]" />
+
+				<DateSelector onStartChange={setStartDate} onEndChange={setEndDate}/>
 
 				<CategorySection />
 
