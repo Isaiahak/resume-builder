@@ -57,6 +57,7 @@ app.post("/add-bulletpoint", async (req,res) =>{
 
 app.post("/add-project", async (req,res) => {
 	const project: Project = req.body;
+	console.log(project);
 	const result: boolean = await addProject(project);
 	if (result){
 	} else {

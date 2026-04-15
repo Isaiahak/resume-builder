@@ -52,6 +52,25 @@ export default function AddProject() {
 		setSelectedCategories(next);
 	}
 
+	function handleStartSet(date: Date): boolean{
+		if (endDate === undefined || endDate > date){
+			setStartDate(date);
+			console.log(startDate);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function handleEndSet(date: Date): boolean{
+		if (startDate === undefined || date > startDate){
+			setEndDate(date);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	const CategorySection = () => {
 		const categories = Object.values(Category);
 		return (
@@ -123,30 +142,31 @@ export default function AddProject() {
 
 	const handleClick = async (): void => {
 		// sets categories
-		setProject({ ...project, categories: selectedCategories.values()});
-		setProject({ ...project, keywords: selectedKeywords.values()});
-		setProject({...project, startDate: startDate});
-		
-		setProject({...project, endDate: endDate});
-		
-
-
-		const res = await fetch("localhost:5173/add-project",{
-			method: "POST",
-			headers: {"Content-Type":"application/json"},
-			body: JSON.stringify(project)
-		});
-		if (!res.ok){
-			console.log("Failed to connect to server");
-		} else {
-			const result: AddProjectResult = await res.json();
-			if (result.exists) {
-				console.log("Project already exists!");
-			} else if (res.added){
-				console.log("successfully add project");
+		if (startDate && endDate && selectedCategories.length != 0 && selectedKeywords.length != 0 && project.name != "" && project.description != ""){
+			setProject({ ...project, categories: selectedCategories.values()});
+			setProject({ ...project, keywords: selectedKeywords.values()});
+			setProject({...project, startDate: startDate});
+			setProject({...project, endDate: endDate});
+			
+			const res = await fetch("http://localhost:3000/add-project",{
+				method: "POST",
+				headers: {"Content-Type":"application/json"},
+				body: JSON.stringify(project)
+			});
+			if (!res.ok){
+				console.log("Failed to connect to server");
 			} else {
-				console.log("something went wrong");
+				const result: AddProjectResult = await res.json();
+				if (result.exists) {
+					console.log("Project already exists!");
+				} else if (res.added){
+					console.log("successfully add project");
+				} else {
+					console.log("something went wrong");
+				}
 			}
+		} else {
+			console.log("empty fields");
 		}
 	}
 
@@ -206,8 +226,7 @@ export default function AddProject() {
 
 				<div className="border-t border-white/[0.06]" />
 
-				<DateSelector onStartChange={setStartDate} onEndChange={setEndDate}/>
-
+				<DateSelector onStartChange={handleStartSet} onEndChange={handleEndSet}/>
 				<CategorySection />
 
 				<CategoryKeywordsSection />

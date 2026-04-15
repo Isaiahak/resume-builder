@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
 type Props = {
-	onStartChange: (date: Date) => void;
-	onEndChange: (date: Date) => void;
+	onStartChange: (date: Date) => boolean;
+	onEndChange: (date: Date) => boolean;
 };
 
 const months = [
@@ -92,13 +92,24 @@ export default function DateSelector({ onStartChange, onEndChange }: Props) {
 
 	useEffect(() => {
 		if (startDay && startMonth && startYear) {
-			onStartChange(new Date(`${startMonth} ${startDay}, ${startYear}`));
+			const result = onStartChange(new Date(`${startMonth} ${startDay}, ${startYear}`));
+			if (result){
+				console.log("can change");
+			} else {
+				console.log("cannot change");
+			}
 		}
 	}, [startDay, startMonth, startYear]);
 
 	useEffect(() => {
+		console.log("end",endDay, endMonth, endYear);
 		if (endDay && endMonth && endYear) {
-			onEndChange(new Date(`${endMonth} ${endDay}, ${endYear}`));
+			const result = onEndChange(new Date(`${endMonth} ${endDay}, ${endYear}`));
+			if (result){
+				console.log("can change");
+			}else {
+				console.log("cannot change");
+			}
 		}
 	}, [endDay, endMonth, endYear]);
 
