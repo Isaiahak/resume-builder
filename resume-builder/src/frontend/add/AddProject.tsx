@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
-import type { Project, Keyword, AddProjectResult } from "../../shared/types";
+import type { Project, Keyword, ProjectResult } from "../../shared/types";
 import { Category, ProjectType } from "../../shared/enums";
 import DateSelector from "./dateComponent";
+import Notification from "../misc/notification";
 
 export default function AddProject() {
 	const [categoryKeywords, setCategoryKeywords] = useState<Map<Category, Keyword[]>>();
 	const [selectedKeywords, setSelectedKeywords] = useState<Set<Keyword>>(new Set());
 	const [selectedCategories, setSelectedCategories] = useState<Set<Category>>(new Set());
+	const [notification, setNotification] = useState<{text:string,type:boolean,id:number}>({
+		text: "",
+		type: false,
+		id: Date.now()
+	})
 	const [startDate, setStartDate] = useState<DateTime>(new Date());
 	const [endDate, setEndDate] = useState<DateTime>(new Date());
 	const [project, setProject] = useState<Project>({
@@ -75,6 +81,7 @@ export default function AddProject() {
 		const categories = Object.values(Category);
 		return (
 			<div className="flex flex-col gap-3">
+				<Notification notification={notification}/>
 				<span className="text-xs tracking-widest uppercase text-white/30 font-mono">
 					Select Categories
 				</span>
@@ -143,30 +150,57 @@ export default function AddProject() {
 	const handleClick = async (): void => {
 		// sets categories
 		if (startDate && endDate && selectedCategories.length != 0 && selectedKeywords.length != 0 && project.name != "" && project.description != ""){
-			setProject({ ...project, categories: selectedCategories.values()});
-			setProject({ ...project, keywords: selectedKeywords.values()});
-			setProject({...project, startDate: startDate});
-			setProject({...project, endDate: endDate});
+	
+			const updatedProject = {
+				...project,
+				categories: [...selectedCategories],
+				keywords: [...selectedKeywords],
+				startDate: startDate,
+				endDate: endDate,
+			};
+
+			setProject(updatedProject);
+			console.log(project);
 			
 			const res = await fetch("http://localhost:3000/add-project",{
 				method: "POST",
 				headers: {"Content-Type":"application/json"},
-				body: JSON.stringify(project)
+				body: JSON.stringify(updatedProject)
 			});
 			if (!res.ok){
-				console.log("Failed to connect to server");
+				setNotification({
+					text: "Failed to connect to server",
+					type: false,
+					id:Date.now()
+				})
 			} else {
-				const result: AddProjectResult = await res.json();
+				const result: ProjectResult = await res.json();
 				if (result.exists) {
-					console.log("Project already exists!");
+					setNotification({
+						text: "Project already exists!",
+						type: false,
+						id:Date.now()
+					})
 				} else if (res.added){
-					console.log("successfully add project");
+					setNotification({
+						text: "successfully add project",
+						type: true,
+						id:Date.now()
+					})
 				} else {
-					console.log("something went wrong");
+					setNotification({
+						text: "something went wrong",
+						type: false,
+						id:Date.now()
+					})
 				}
 			}
 		} else {
-			console.log("empty fields");
+			setNotification({
+				text: "empty fields",
+				type: false,
+				id:Date.now()
+			})
 		}
 	}
 
@@ -220,7 +254,7 @@ export default function AddProject() {
 						onChange={(e) => setProject({ ...project, description: e.target.value })}
 						rows={5}
 						placeholder="Enter project description."
-						className="w-full resize-y bg-white/[0.02] border border-white/[0.08] rounded-sm px-4 py-3.5 font-mono text-sm leading-relaxed text-white/85 placeholder-white/20 outline-none focus:border-white/25 focus:bg-white/[0.04] transition-all duration-200"
+						className="w-full resize-y bg-white/[0.02] no-scrollbar border border-white/[0.08] rounded-sm px-4 py-3.5 font-mono text-sm leading-relaxed text-white/85 placeholder-white/20 outline-none focus:border-white/25 focus:bg-white/[0.04] transition-all duration-200"
 					/>
 				</div>
 

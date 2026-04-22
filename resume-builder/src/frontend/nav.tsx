@@ -23,6 +23,10 @@ export default function Nav(){
 					onClick={() => setSelectedPage("add")}>
 				Add
 			</button>
+			<button className="mx-auto py-2 hover:underline"
+					onClick={() => setSelectedPage("description")}>
+				Description
+			</button>
 		  </div>
 		</nav>
   );

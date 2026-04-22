@@ -6,12 +6,12 @@ export type BulletPointsResult = {
   bulletPoints: (BulletPoint & { keyword: string })[];
 };
 
-export type AddAtsResult = {
+export type AtsResult = {
 	exists: boolean;
 	added: boolean;
 };
 
-export type AddBulletpointResult = {
+export type BulletpointResult = {
 	exists: boolean;
 	added: boolean;
 }
@@ -24,7 +24,7 @@ export type BulletPointPrompt = {
 	keywords: string[];
 }
 
-export type AddProjectResult = {
+export type ProjectResult = {
 	exists: boolean;
 	added: boolean;
 }

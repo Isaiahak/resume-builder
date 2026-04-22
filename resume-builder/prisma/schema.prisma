@@ -30,10 +30,10 @@ model BulletPoint {
 
 model Project {
   id          Int                 @id @default(autoincrement())
-  name        String
+  name        String              @unique
   description String
-  startDate DateTime
-  endDate DateTime
+  startDate   DateTime
+  endDate     DateTime
   type        ProjectType
   bullets     BulletPoint[]
   categories  ProjectCategories[]

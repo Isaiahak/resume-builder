@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-export type Page = "search" | "project" | "add"; 
+export type Page = "search" | "project" | "add" | "description"; 
 
 export type PageContextType = {
   selectedPage: Page;

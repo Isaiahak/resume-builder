@@ -4,6 +4,7 @@ import Nav from "./nav";
 import SearchPage from "./search/SearchPage";
 import ProjectViewPage from "./project/ProjectViewPage";
 import AddPage from "./add/AddPage";
+import DescriptionPage from "./description/CheckDescriptionPage";
 
 export default function HomePage() {
 	const context = useContext(PageContext);
@@ -25,8 +26,10 @@ export default function HomePage() {
 			<SearchPage/>
 			) : selectedPage === "project" ? (
 			<ProjectViewPage/>
-			) : (
+			) : selectedPage === "add" ? (
 			<AddPage/>
+			) : (
+			<DescriptionPage/>
 			)}
 		</div>
 	</div>

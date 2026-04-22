@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
-import type {  BulletPoint, Category, Keyword, AddAtsResult, BulletPointPrompt } from "../shared/types";
-import { getBulletPointsForKeyword, checkForAts, getProjects, addKeyword, addBulletpoint, getCategoryKeywords } from "./operations";
+import type {  BulletPoint, Category, Keyword, AtsResult, ProjectResult, BulletPointPrompt } from "../shared/types";
+import { getBulletPointsForKeyword, checkForAts, getProjects, addProject, addKeyword, addBulletpoint, getCategoryKeywords } from "./operations";
 
 
 const app = express();
@@ -41,8 +41,12 @@ app.post("/add-ats", async (req,res) =>{
 			result.exists = true;
 		} else {
 			const added: boolean = await addKeyword(keyword); 
+			if (added){
 			console.log("added : ", keyword.name, " to database");
 			result.added = true;
+			} else {
+				console.log("failed to add");
+			}
 		}
 	}
 	res.json(result);	
@@ -57,10 +61,23 @@ app.post("/add-bulletpoint", async (req,res) =>{
 
 app.post("/add-project", async (req,res) => {
 	const project: Project = req.body;
+	const result: ProjectResult = {
+		exits: false,
+		added: false
+	};
 	console.log(project);
-	const result: boolean = await addProject(project);
-	if (result){
+	const exists: boolean = await checkForProject(project);
+	if (exists) {
+		console.log("failed to add ", project.name, " it already exists");
+		result.exists = true;
 	} else {
+		const added: boolean = await addProject(project);
+		if (added) {
+			console.log("added : ", project.name, " to database");
+			result.added = true;	
+		} else {
+			console.log("failed to add");
+		}
 	}
 	res.json(result);
 });
@@ -68,6 +85,12 @@ app.post("/add-project", async (req,res) => {
 app.listen(3000, () => {
 	console.log("Server running on http://localhost:3000");
 });
+
+app.post("/check-description", async (req,res) => {
+	const description: string = req.body;
+	console.log(description);
+})
+
 
 app.get("/get-category-keywords", async (req,res) => {
 	const categoryKeywords: Map<Category, Keyword[]> = await getCategoryKeywords();

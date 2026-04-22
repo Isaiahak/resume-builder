@@ -102,8 +102,19 @@ export async function checkForAts(ats: Keyword): Promise<boolean>{
 	});
 
 	const exists = !!keywordRecord;
-	return exists;
+	return exists
 }
+
+export async function checkForProject(name: string): Promise<boolean>{
+	const keywordRecord = await prisma.project.findUnique({
+	where: { name: name },
+	});
+
+	const exists = !!keywordRecord;
+	return exists
+}
+
+
 
 export async function getCategoryKeywords(): Promise<Map<Category, Keyword[]>>{
 	
@@ -121,7 +132,7 @@ export async function getCategoryKeywords(): Promise<Map<Category, Keyword[]>>{
 
 export async function addProject(project: Project): Promise<boolean>{
 	try {
-		const project: Project = await prisma.project.create({
+		const proj: Project = await prisma.project.create({
 			data: {
 				name: project.name,
 				description: project.description,
@@ -139,7 +150,7 @@ export async function addProject(project: Project): Promise<boolean>{
 		console.log("successfully added: ", project.name);
 		return(true);
 	} catch(err){
-		console.log("failed to save project");
+		console.log("failed to save project", err);
 		return(false);
 	}
 }

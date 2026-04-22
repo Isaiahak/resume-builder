@@ -1,9 +1,15 @@
 import { useState }from "react";
-import type { Keyword, AddAtsResult } from "../../shared/types";
+import Notification from "../misc/notification";
+import type { Keyword, AtsResult } from "../../shared/types";
 
 export default function AddAts(){
 	const [ats, setAts] = useState<string>("");	
 	const [isSaving, setIsSaving] = useState<bool>(false);
+	const [notification, setNotification] = useState<{text: string; type: string; id: number}>({
+		text: "",
+		type: false,
+		id: Date.now()
+	});
 
 	const handleAdd = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		try {
@@ -15,37 +21,55 @@ export default function AddAts(){
 				body: JSON.stringify(data)
 			});
 			if (!res.ok) {
-				console.log("Failed to connect to server");	
+				setNotification({
+					text:"Failed to connect to server",
+					type:false,
+					id: Date.now(),
+				});
 				setIsSaving(false);
 			} else {
-				const result: AddAtsResult = await res.json();
+				const result: AtsResult = await res.json();
 				if (result.exists) {
-					console.log("db already contains the keyword");
-					// some type of error module
+					setNotification({
+						text:"db already contains the keyword",
+						type:false,
+						id: Date.now()
+					})
 					setAts("");
 				}
 				if (result.added === true) {
-					console.log("successfully added keyword");
-					// some type of module for success
+					setNotification({
+						text:"successfully added keyword",
+						type:true,
+						id: Date.now()
+					})
 					setAts("");
 				} else {
-					// some type of module for failure
-					console.log("failed to add keyword");
+					setNotification({
+						text:"failed to add keyword",
+						type:false,
+						id:Date.now()
+					})
 				}
 				setIsSaving(false);
 			}
 		} catch(err){
-			console.log("Invalid JSON: ", err);
+			setNotification({
+				text:"Invalid JSON",
+				type:false,
+				id: Date.now()
+			})
 		}
 	};
 	
 	return(
 	<div>
+	<Notification notification={notification} />
 	  <textarea
 		value={ats}
 		onChange={(e) => setAts(e.target.value)}
 		rows={7}
-		className="w-full resize-y bg-white/[0.02] border border-white/[0.08] rounded-sm px-4 py-3.5 font-mono text-xs leading-relaxed text-white/85 placeholder-white/20 outline-none focus:border-white/25 focus:bg-white/[0.04] transition-all duration-200"
+		className="w-full resize-y bg-white/[0.02] border border-white/[0.08] rounded-sm px-4 py-3.5 font-mono text-xs leading-relaxed text-white/85 placeholder-white/20 outline-none focus:border-white/25 focus:bg-white/[0.04] transition-all duration-200 z-0"
 	  />
 	  <button
 		onClick={() => handleAdd()}

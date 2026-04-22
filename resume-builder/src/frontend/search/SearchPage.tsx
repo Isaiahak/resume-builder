@@ -3,6 +3,7 @@ import BulletPointList from "./BulletPoint";
 import BulletPointButton from "./BulletPointButton";
 import AtsButton from "./AtsButton";
 import type { BulletPointsResult } from "../../shared/types";
+import Notification from "../misc/notification";
 
 export default function SearchPage(){
 	const [query, setQuery] = useState<string>("");
@@ -11,6 +12,11 @@ export default function SearchPage(){
 	  exists: false,
 	  bulletPoints: [],
 	});
+	const [notification, setNotification] = useState<{text:string, type:boolean, id: number}>({
+		text: "",
+		type:false,
+		id: Date.now()
+	})
 
 	const [hasSearched, setHasSearched] = useState<boolean>(false);
 
@@ -22,6 +28,11 @@ export default function SearchPage(){
 
 		if (!res.ok) {
 			console.log("failed to send request");
+			setNotification({
+				text: "failed to send request",
+				type: false,
+				id: Date.now()
+			})
 		}
 
 		const data = await res.json();

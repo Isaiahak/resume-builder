@@ -1,9 +1,15 @@
 import { useState }from "react";
-import type { Keyword, AddBulletpointResult, BulletPointPrompt } from "../../shared/types";
+import Notification from "../misc/notification";
+import type { Keyword, BulletpointResult, BulletPointPrompt } from "../../shared/types";
 
 export default function AddBulletPoint(){
 	const [bulletPoint, setBulletPoint] = useState<string>("");	
 	const [isSaving, setIsSaving] = useState<bool>(false);	
+	const [notification, setNotification] = useState<{text:string, type:boolean, id: number}>({
+		text: "",
+		type: false,
+		id: Date.now()
+	})
 
 	const handleAdd = async (e: React.FormEvent<HTMLFormEvent>): Promise<void> => {
 		try {
@@ -16,28 +22,49 @@ export default function AddBulletPoint(){
 				body: JSON.stringify(data)
 			});
 			if (!res.ok) {
-				console.log("Failed to connect to server");	
+				setNotification({
+					text:"Failed to connect to server",
+					type:false,
+					id: Date.now()
+				})
 				setIsSaving(false);
 			} else {
-				const result: AddBulletpointResult = res.json()
+				const result: BulletpointResult = res.json()
 				if (result.exists) {
-					console.log("db already contains bulletpoint");
+					setNotification({
+						text:"db already contains bulletpoint",
+						type:false,
+						id: Date.now()
+					})
 					setBulletPoint("");
 				} else if (result.added === true) {
-					console.log("successfully added bulletpoint");
+					setNotification({
+						text: "successfully added bulletpoint",
+						type: true,
+						id: Date.now()
+					})
 					setBulletPoint("");
 				} else {
-					console.log("failed to add bulletpoint");
+					setNotification({
+						text:"failed to add bulletpoint",
+						type:false,
+						id: Date.now()
+					})
 				}
 				setIsSaving(false);
 			}
 		} catch(err){
-			console.log("Invalid JSON: ", err);
+			setNotification({
+				text:"Invalid JSON: ",
+				type:false,
+				id: Date.now()
+			})
 		}
 	};
 
 return(	
 	<div>
+	<Notification notification={notification} /> 
 	  <textarea
 		value={bulletPoint}
 		onChange={(e) => setBulletPoint(e.target.value)}

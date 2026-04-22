@@ -102,7 +102,6 @@ export default function DateSelector({ onStartChange, onEndChange }: Props) {
 	}, [startDay, startMonth, startYear]);
 
 	useEffect(() => {
-		console.log("end",endDay, endMonth, endYear);
 		if (endDay && endMonth && endYear) {
 			const result = onEndChange(new Date(`${endMonth} ${endDay}, ${endYear}`));
 			if (result){

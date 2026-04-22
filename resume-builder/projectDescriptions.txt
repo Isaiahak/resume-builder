@@ -1,0 +1,75 @@
+Stock Monitoring Tool
+
+Developed a locally hosted stock monitoring application that allows users to track selected stocks and receive relevant news during significant price movements. Built a TypeScript-based frontend for managing watchlists and displaying real-time insights. Implemented scheduled web scraping jobs to collect daily stock data and trigger event-based updates. Designed a word-association embedding approach to map financial news articles to relevant stocks using sector-based keyword groupings. Optimized article retrieval and processing pipelines to reduce latency and improve relevance. Built in Go to support future cloud deployment and scalable backend processing.
+
+Workflow App
+
+Built a full-stack workflow management platform designed for independent developers as an alternative to tools like Jira and Confluence. Developed a React/Next.js frontend with dynamic state handling for project and task management. Designed a NoSQL-backed backend system to store user and project data. Implemented WebSocket-based real-time collaboration with concurrent editing and synchronization. Deployed authentication using Clerk and established CI/CD pipelines with GitHub Actions. Improved developer productivity by integrating automated commit message generation based on task context and quick-access Git command workflows.
+
+Optimization Tool
+
+Developed a performance analysis tool that processes 30-minute gameplay recordings and generates concise optimization insights within seconds. Designed a machine learning pipeline using Siamese networks for image recognition to detect key gameplay events without accessing restricted real-time game data. Implemented additional computer vision techniques to identify UI elements and icons for contextual analysis. Built a React and TypeScript frontend for visualizing insights and summaries. Deployed a cloud-based backend leveraging GPU acceleration to efficiently process compute-intensive ML workloads.
+
+Movie Recommendation Website
+
+Built a full-stack movie recommendation platform that generates personalized suggestions based on user ratings and preferences. Developed a React frontend for user interaction and rating workflows, and a FastAPI backend to handle recommendation logic and data processing. Designed a recommendation system using vector embeddings stored in MongoDB to model user preferences. Implemented data preprocessing pipelines to clean and transform user input into initial embeddings, addressing cold-start scenarios for new users. Scheduled periodic updates via cron jobs to refresh recommendations and improve relevance over time. Integrated custom user authentication to support personalized experiences.
+
+Kidnasium
+
+Worked as an instructor responsible for coaching gymnastics and ninja-style training classes for children aged 5–15. Designed and delivered structured lesson plans while adapting teaching approaches to different skill levels and group sizes. Managed large group sessions, including birthday events with up to 20 participants, requiring strong organization and real-time coordination. Collaborated with parents to provide feedback and tailor training approaches. Represented the organization in an external summer camp program, adapting curriculum to constrained environments with limited equipment, requiring flexibility and creative problem-solving.
+
+Elte
+
+Supported showroom operations through inventory management, product organization, and customer interaction. Assisted clients in identifying and selecting products, contributing to sales and customer experience. Participated in inventory audits and rebranding efforts, helping maintain accurate stock records and updated product displays.
+
+Elections Canada
+
+Worked with the materials management team for Elections Canada to prepare and distribute election resources across the district. Organized and assembled materials used for training and election-day operations. Designed an improved post-election material sorting and tracking system, enabling faster and more efficient collection and redistribution. Assisted in coordinating and delivering additional supplies to polling locations as needed.
+
+outline
+---------------------------------------------------------
+
+WHAT WAS BUILT / WORK DONE
+
+- what is the product/system
+
+- who is it for
+
+- what problem does it solve
+
+
+ *** concrete not generic ***
+
+---------------------------------------------------------
+
+YOUR ROLE + OWNERSHIP 
+
+- solo or team
+- what parts did you focus on
+
+---------------------------------------------------------
+
+CORE FEATURES
+
+prioritize:
+
+- real-time systems
+- apis
+- state managment
+- data processing
+- algorithms
+- integrations
+
+---------------------------------------------------------
+
+Technical Challenges
+
+Actions I took
+
+Results / Impact
+
+Data + Logico
+
+Architecture hints
+
+Constraints
