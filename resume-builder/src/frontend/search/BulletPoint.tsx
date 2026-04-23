@@ -1,6 +1,6 @@
 import { useState } from "react";
-import type { BulletPoint } from "../../shared/types/types" 
-import { ProjectType } from "../../shared/types/enums";
+import type { BulletPoint } from "@shared/types/types" 
+import { ProjectType } from "@shared/types/enums";
 
 interface GroupedBullets {
   projectId: number;

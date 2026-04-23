@@ -1,6 +1,6 @@
 import { useState }from "react";
 import Notification from "../misc/notification";
-import type { Keyword, BulletpointResult, BulletPointPrompt } from "../../shared/types/types";
+import type { Keyword, BulletpointResult, BulletPointPrompt } from "@shared/types/types";
 
 export default function AddBulletPoint(){
 	const [bulletPoint, setBulletPoint] = useState<string>("");	

@@ -4,8 +4,8 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const { PrismaClient } = require("../generated/prisma/client");
 //import { PrismaClient } from "@prisma/client";
-import type { BulletPoint, Keyword, Project } from "../shared/types/types";
-import { Category } from "../shared/types/enums";
+import type { BulletPoint, Keyword, Project } from "@shared/types/types";
+import { Category } from "@shared/types/enums";
 
 const connectionString = `${process.env.DATABASE_URL}`;
 

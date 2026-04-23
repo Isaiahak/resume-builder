@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import type { Project } from "../../shared/types/types";
-import { buildBulletPointPrompt } from "../../shared/prompts/prompts";
+import type { Project } from "@shared/types/types";
+import { buildBulletPointPrompt } from "@shared/prompts/prompts";
 interface BulletPointButtonProps {
   query: string;
 }

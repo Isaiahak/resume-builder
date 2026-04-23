@@ -4,8 +4,8 @@ import { validDescription } from "./utils";
 import OpenAI from "openai";
 import type {  BulletPoint, Category, Keyword, AtsResult, ProjectResult, BulletPointPrompt } from "../shared/types/types";
 import { getBulletPointsForKeyword, checkForAts, getProjects, addProject, addKeyword, addBulletpoint, getCategoryKeywords } from "./operations";
-import { descriptionATSPrompt } from "../shared/prompts/prompts";
-import { descriptionResponse } from "../shared/prompts/structured_output";
+import { descriptionATSPrompt } from "@shared/prompts/prompts";
+import { descriptionResponse } from "@shared/prompts/structured_output";
 
 const app = express();
 const client = new OpenAI();

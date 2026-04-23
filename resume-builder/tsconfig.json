@@ -11,10 +11,17 @@
 	"emitDeclarationOnly": false,
 	"outDir": "./dist",
 	"rootDir": "./src",
+	"baseUrl":".",
+	"paths":{
+		"@/*" : [ "src/*"],
+		"@backend/*" : ["src/backend/*"],
+		"@frontend/*" : ["src/frontend/*"],
+		"@shared/*" : ["src/shared/*"]
+	}
   },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ],
+  ]
 }

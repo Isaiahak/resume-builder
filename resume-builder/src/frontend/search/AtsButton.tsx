@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { buildATSPrompt } from "../../shared/prompts/prompts";
+import { buildATSPrompt } from "@shared/prompts/prompts";
 
 
 interface ATSButtonProps {

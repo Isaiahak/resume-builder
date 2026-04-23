@@ -1,6 +1,6 @@
 import { useState }from "react";
 import Notification from "../misc/notification";
-import type { Keyword, AtsResult } from "../../shared/types/types";
+import type { Keyword, AtsResult } from "@shared/types/types";
 
 export default function AddAts(){
 	const [ats, setAts] = useState<string>("");	

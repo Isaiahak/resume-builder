@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import type { Project, Keyword, ProjectResult } from "../../shared/types/types";
-import { Category, ProjectType } from "../../shared/types/enums";
+import type { Project, Keyword, ProjectResult } from "@shared/types/types";
+import { Category, ProjectType } from "@shared/types/enums";
 import DateSelector from "./dateComponent";
 import Notification from "../misc/notification";
 
