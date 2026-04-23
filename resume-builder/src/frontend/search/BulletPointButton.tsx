@@ -1,53 +1,8 @@
 import { useState, useEffect } from "react";
-import type { Project } from "../../shared/types";
-
+import type { Project } from "../../shared/types/types";
+import { buildBulletPointPrompt } from "../../shared/prompts/prompts";
 interface BulletPointButtonProps {
   query: string;
-}
-
-function buildBulletPointPrompt(query: string): string {
-	return `
-	After doing research on the 2026 software developer market, I need you to create json representation of this bulletpoint model for the keyword: ${query}.
-	model BulletPointPrompt {
-	  id      Int    @id @default(autoincrement())
-	  content String
-
-	  projectId    Int
-	  projectType  ProjectType
-	  project      Project         @relation(fields: [projectId], references: [id]) // or relation if you expand later
-	  job          String?
-	  category     String
-	  skillType    String
-	  keywordLinks Keyword[]
-	}
-	content describes a task that most likely was done with the provided project using the provided keyword. make this a brief but informative bulletpoint describing a task done in the project, using keyword which achieve some metric of improvement most relevant to the project and keyword.
-
-	project being the project the bulletpoint is for, with the project being,
-	${project}
-	
-	catergory is the best fitting category out of this enum,
-	enum Category {
-	  FRONTEND
-	  BACKEND
-	  DEVOPS
-	  DATA
-	  ML
-	  MANAGEMENT
-	  DESIGN
-	  TESTING
-	  OTHER
-	}
-
-	skill Type describes the type of skill the bulletpoint describes should also be related to the ats keyword provided,
-	enum SkillType {
-	  HARD
-	  SOFT
-	}	
-	
-	keywordLinks are other keywords that might be associated with the bulletpoint, you can take these from the list contained within the project. Normalize the name to a standard industry format (Title Case, expand common abbreviations like JS → JavaScript, keep widely accepted acronyms like HTML unchanged)
-	
-	return only valid JSON. No explanations.	
-  `;
 }
 
 export default function BulletPointButton({ query }: BulletPointButtonProps) {

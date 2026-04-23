@@ -1,10 +1,14 @@
 import express from "express";
 import cors from "cors";
-import type {  BulletPoint, Category, Keyword, AtsResult, ProjectResult, BulletPointPrompt } from "../shared/types";
+import { validDescription } from "./utils";
+import OpenAI from "openai";
+import type {  BulletPoint, Category, Keyword, AtsResult, ProjectResult, BulletPointPrompt } from "../shared/types/types";
 import { getBulletPointsForKeyword, checkForAts, getProjects, addProject, addKeyword, addBulletpoint, getCategoryKeywords } from "./operations";
-
+import { descriptionATSPrompt } from "../shared/prompts/prompts";
+import { descriptionResponse } from "../shared/prompts/structured_output";
 
 const app = express();
+const client = new OpenAI();
 
 app.use(express.json());
 
@@ -88,7 +92,28 @@ app.listen(3000, () => {
 
 app.post("/check-description", async (req,res) => {
 	const description: string = req.body;
-	console.log(description);
+	const cleanedDesc = validDescription(description);
+
+	const response = await client.response.create({
+		model: "gpt-5.4",
+		input: [
+			{
+				role: "developer",
+				content: descriptionATSPrompt,
+			},
+			{
+				role: "user",
+				content: cleanedDesc,
+			},
+		],
+		text: {
+			format: descriptionResponse 
+		}
+	});	
+
+	console.log(response.output_text);
+
+	res.json(true);
 })
 
 

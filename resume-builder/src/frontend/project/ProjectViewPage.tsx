@@ -3,7 +3,7 @@ import ProjectButton from "./ProjectButton";
 import ProjectBulletPoints from "./ProjectBulletPoints";
 import { ProjectProvider } from "../context/projectProvider";
 import { useEffect, useState } from "react";
-import type { Project } from "../../shared/types";
+import type { Project } from "../../shared/types/types";
 import Notification from "../misc/notification";
 
 export default function ProjectViewPage(){

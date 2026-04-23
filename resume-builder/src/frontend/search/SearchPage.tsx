@@ -2,7 +2,7 @@ import { useState } from "react";
 import BulletPointList from "./BulletPoint";
 import BulletPointButton from "./BulletPointButton";
 import AtsButton from "./AtsButton";
-import type { BulletPointsResult } from "../../shared/types";
+import type { BulletPointsResult } from "../../shared/types/types";
 import Notification from "../misc/notification";
 
 export default function SearchPage(){
